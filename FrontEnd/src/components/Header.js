@@ -3,18 +3,18 @@ import { NavLink } from "react-router-dom";
 function Header() {
   return (
     <>
-      <header className="header-container">
-        <img
-          src="argentBankLogo.png"
-          alt="logo de la plateforme Argent Bank"
-          className="header-logo"
-        />
-        <nav className="header-navbar">
-          <ul>
-            <li>
-              <NavLink to="/about">Sign In</NavLink>
-            </li>
-          </ul>
+      <header>
+        <nav class="main-nav">
+          <NavLink to="/">
+            <img
+              class="main-nav-logo-image"
+              src="argentBankLogo.png"
+              alt="Argent Bank Logo"
+            />
+          </NavLink>
+          <div>
+            <NavLink to="/signIn">Sign In</NavLink>
+          </div>
         </nav>
       </header>
     </>

@@ -12,27 +12,6 @@ code {
     monospace;
 }
 
-/* Header */
-
-.header-container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.header-logo {
-  max-width: 100%;
-  width: 200px;
-}
-
-.header-navbar,
-ul {
-  text-decoration-style: none;
-  color: #2c3e50;
-  size: 100px;
-  list-style: none;
-  text-decoration: none;
-}
-
 /* Home */
 
 .main-logo {
@@ -53,3 +32,5 @@ ul {
   border-radius: 50%;
   padding: 1rem;
 }
+
+/* Sign-In< */
