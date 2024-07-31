@@ -1,18 +1,16 @@
-function Home() {
+function home() {
   return (
     <main>
       <div class="hero">
         <section class="hero-content">
-          <h2 class="sr-only">Promoted Content</h2>
           <p class="subtitle">No fees.</p>
           <p class="subtitle">No minimum deposit.</p>
           <p class="subtitle">High interest rates.</p>
           <p class="text">Open a savings account with Argent Bank today!</p>
         </section>
-        <img src="bank-tree.jpeg" alt="" className="main-logo" />
+        {/* <img src="bank-tree.jpeg" alt="" className="main-logo" /> */}
       </div>
       <section class="features-container">
-        <h2 class="sr-only">Features</h2>
         <div class="feature-item">
           <img src="icon-chat.png" alt="Chat Icon" class="features-icon" />
           <h3 class="feature-item-title">You are our #1 priority</h3>
@@ -41,4 +39,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default home;

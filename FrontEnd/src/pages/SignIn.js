@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 
 function sign() {
   return (
-    <>
+    <main class="main bg-dark">
       <section class="sign-in-content">
         <i class="fa fa-user-circle sign-in-icon"></i>
         <h1>Sign In</h1>
         <form>
           <div class="input-wrapper">
-            <label for="username">Username</label>
+            <label for="username">Mail</label>
             <input type="text" id="username" />
           </div>
           <div class="input-wrapper">
@@ -27,7 +27,7 @@ function sign() {
           <!--  --> */}
         </form>
       </section>
-    </>
+    </main>
   );
 }
 
