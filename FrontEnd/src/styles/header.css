@@ -3,11 +3,20 @@
 .main-nav {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .main-nav-logo-image {
   max-width: 100%;
   width: 200px;
+}
+
+.main-nav-link {
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: bold;
+  margin-right: 2rem;
+  font-size: 18px;
 }
 
 .header-navbar,

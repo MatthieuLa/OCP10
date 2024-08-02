@@ -9,7 +9,7 @@ function sign() {
         <form>
           <div class="input-wrapper">
             <label for="username">Mail</label>
-            <input type="text" id="username" />
+            <input type="email" id="email" required />
           </div>
           <div class="input-wrapper">
             <label for="password">Password</label>
@@ -19,12 +19,10 @@ function sign() {
             <input type="checkbox" id="remember-me" />
             <label for="remember-me">Remember me</label>
           </div>
-          {/* <!-- PLACEHOLDER DUE TO STATIC SITE --> */}
-          <Link to="/user">Sign In</Link>
-
-          {/* <!-- SHOULD BE THE BUTTON BELOW -->
-          <!-- <button class="sign-in-button">Sign In</button> -->
-          <!--  --> */}
+          <i class="fa fa-user-circle sign-in-icon"></i>
+          <Link to="/user">
+            <button class="sign-in-button">Sign In</button>
+          </Link>
         </form>
       </section>
     </main>

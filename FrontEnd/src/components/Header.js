@@ -13,7 +13,9 @@ function Header() {
             />
           </NavLink>
           <div>
-            <NavLink to="/signIn">Sign In</NavLink>
+            <NavLink to="/signIn" className={"main-nav-link"}>
+              Sign In
+            </NavLink>
           </div>
         </nav>
       </header>
