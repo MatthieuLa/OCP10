@@ -19,7 +19,6 @@ function sign() {
             <input type="checkbox" id="remember-me" />
             <label for="remember-me">Remember me</label>
           </div>
-          <i class="fa fa-user-circle sign-in-icon"></i>
           <Link to="/user">
             <button class="sign-in-button">Sign In</button>
           </Link>
