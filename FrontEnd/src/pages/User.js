@@ -3,16 +3,6 @@ import Account from "../components/Account";
 function user() {
   return (
     <>
-      <div>
-        <a class="main-nav-item" href="./user.html">
-          <i class="fa fa-user-circle"></i>
-          Tony
-        </a>
-        <a class="main-nav-item" href="./index.html">
-          <i class="fa fa-sign-out"></i>
-          Sign Out
-        </a>
-      </div>
       <main class="main bg-dark">
         <div class="header">
           <h1>
