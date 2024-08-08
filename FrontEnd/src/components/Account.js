@@ -1,4 +1,4 @@
-function account() {
+function Account() {
   const accountObject = {
     checking: {
       title: "Argent Bank Checking (x8349)",
@@ -20,8 +20,8 @@ function account() {
   return (
     <>
       {Object.keys(accountObject).map((key) => (
-        <section className="account">
-          <div className="account-content-wrapper" key={key}>
+        <section className="account" key={key}>
+          <div className="account-content-wrapper">
             <h3 className="account-title">{accountObject[key].title}</h3>
             <p className="account-amount">{accountObject[key].amount}</p>
             <p className="account-amount-description">
@@ -37,4 +37,4 @@ function account() {
   );
 }
 
-export default account;
+export default Account;

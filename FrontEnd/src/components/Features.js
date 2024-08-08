@@ -1,4 +1,4 @@
-function features() {
+function Features() {
   const featuresObject = [
     {
       icon: "icon-chat.webp",
@@ -22,10 +22,14 @@ function features() {
 
   return (
     <>
-      {featuresObject.map((feature) => (
-        <div class="feature-item">
-          <img src={feature.icon} alt="Chat Icon" class="features-icon" />
-          <h3 class="feature-item-title">{feature.title}</h3>
+      {featuresObject.map((feature, index) => (
+        <div className="feature-item" key={index}>
+          <img
+            src={feature.icon}
+            alt={feature.title}
+            className="features-icon"
+          />
+          <h3 className="feature-item-title">{feature.title}</h3>
           <p>{feature.description}</p>
         </div>
       ))}
@@ -33,4 +37,4 @@ function features() {
   );
 }
 
-export default features;
+export default Features;

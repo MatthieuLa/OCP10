@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserFromAPI, setUser } from "../features/user/userSlice";
+import { fetchUserFromAPI } from "../features/user/userSlice";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -17,13 +17,10 @@ const SignIn = () => {
     const credentials = { email, password };
     const resultAction = await dispatch(fetchUserFromAPI(credentials));
     if (fetchUserFromAPI.fulfilled.match(resultAction)) {
-      const user = resultAction.payload.user;
-      const token = resultAction.payload.token;
       if (rememberMe) {
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", token);
+        localStorage.setItem("token", resultAction.payload.token);
+        localStorage.setItem("user", JSON.stringify(resultAction.payload.user));
       }
-      dispatch(setUser({ user, token }));
       navigate("/user");
     }
   };

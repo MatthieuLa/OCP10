@@ -7,16 +7,18 @@ import { logout } from "../features/user/userSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const user = useSelector((state) => state.user.user);
 
   const handleLogout = () => {
     dispatch(logout());
   };
 
+  const iconProfile = (iconName) => `fa fa-${iconName}`;
+
   return (
     <header>
       <nav className="main-nav">
         <Link to="/">
-          {" "}
           <img
             src="argentBankLogo.webp"
             alt="logo argentbank"
@@ -24,12 +26,15 @@ const Header = () => {
           />
         </Link>
         {isAuthenticated ? (
-          <>
-            <Link to="/user">Profile</Link>
+          <div className="main-nav-user">
+            <i className={iconProfile("user-circle")}></i>
+            <Link to="/user" className="main-nav-link">
+              {user?.firstName}
+            </Link>
             <div onClick={handleLogout} className="main-nav-link">
               Sign Out
             </div>
-          </>
+          </div>
         ) : (
           <Link to="/signin" className="main-nav-link">
             Sign In
