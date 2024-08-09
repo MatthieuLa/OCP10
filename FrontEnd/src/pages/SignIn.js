@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserFromAPI } from "../features/user/userSlice";
+import { fetchUserFromAPI, fetchUserProfile } from "../features/user/userSlice";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -16,11 +16,22 @@ const SignIn = () => {
     e.preventDefault();
     const credentials = { email, password };
     const resultAction = await dispatch(fetchUserFromAPI(credentials));
+
     if (fetchUserFromAPI.fulfilled.match(resultAction)) {
+      const { token } = resultAction.payload;
+
       if (rememberMe) {
-        localStorage.setItem("token", resultAction.payload.token);
-        localStorage.setItem("user", JSON.stringify(resultAction.payload.user));
+        localStorage.setItem("token", token);
+      } else {
+        localStorage.removeItem("token"); // Clear token if not remembered
       }
+
+      // Set token in session storage for the API calls
+      sessionStorage.setItem("token", token);
+
+      // Fetch user profile after successful login
+      await dispatch(fetchUserProfile());
+
       navigate("/user");
     }
   };
@@ -60,7 +71,7 @@ const SignIn = () => {
             />
             <label htmlFor="remember-me">Remember me</label>
           </div>
-          {error && <p className="error">{error}</p>}
+          {error && <p className="error">Error: {error}</p>}
           <button type="submit" className="sign-in-button" disabled={isLoading}>
             {isLoading ? "Signing in..." : "Sign In"}
           </button>

@@ -23,19 +23,17 @@ function Features() {
   return (
     <>
       {featuresObject.map((feature, index) => (
-        <Feature feature={feature} key={index} />
+        <div className="feature-item" key={index}>
+          <img
+            src={feature.icon}
+            alt={feature.title}
+            className="features-icon"
+          />
+          <h3 className="feature-item-title">{feature.title}</h3>
+          <p>{feature.description}</p>
+        </div>
       ))}
     </>
-  );
-}
-
-export function Feature({ feature }) {
-  return (
-    <div className="feature-item">
-      <img src={feature.icon} alt={feature.title} className="features-icon" />
-      <h3 className="feature-item-title">{feature.title}</h3>
-      <p>{feature.description}</p>
-    </div>
   );
 }
 

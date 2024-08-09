@@ -11,6 +11,11 @@
   width: 200px;
 }
 
+.main-nav-user {
+  display: flex;
+  align-items: center;
+}
+
 .main-nav-link {
   text-decoration: none;
   color: #2c3e50;
@@ -18,6 +23,11 @@
   margin-right: 2rem;
   font-size: 18px;
   cursor: pointer;
+}
+
+.fa-user-circle,
+.auth {
+  margin-right: 1rem;
 }
 
 .header-navbar,

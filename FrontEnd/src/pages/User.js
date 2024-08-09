@@ -1,4 +1,4 @@
-import Account from "../components/Account";
+import AccountList from "../containers/AccountList";
 
 function user() {
   return (
@@ -13,7 +13,7 @@ function user() {
           <button className="edit-button">Edit Name</button>
         </div>
         <h2 className="sr-only">Accounts</h2>
-        <Account />
+        <AccountList />
       </main>
     </>
   );

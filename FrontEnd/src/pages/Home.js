@@ -1,4 +1,4 @@
-import Features from "../components/Features";
+import FeatureList from "../containers/FeatureList";
 
 function home() {
   return (
@@ -12,7 +12,7 @@ function home() {
         </section>
       </div>
       <section className="features-container">
-        <Features />
+        <FeatureList />
       </section>
     </main>
   );

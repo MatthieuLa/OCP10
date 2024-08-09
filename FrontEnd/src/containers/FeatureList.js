@@ -1,4 +1,6 @@
-function Features() {
+import { Feature } from "../components/Features";
+
+function FeatureList() {
   const featuresObject = [
     {
       icon: "icon-chat.webp",
@@ -29,14 +31,4 @@ function Features() {
   );
 }
 
-export function Feature({ feature }) {
-  return (
-    <div className="feature-item">
-      <img src={feature.icon} alt={feature.title} className="features-icon" />
-      <h3 className="feature-item-title">{feature.title}</h3>
-      <p>{feature.description}</p>
-    </div>
-  );
-}
-
-export default Features;
+export default FeatureList;

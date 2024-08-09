@@ -173,6 +173,12 @@ input {
   margin-bottom: 2em;
 }
 
+.account-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .account {
   display: flex;
   justify-content: space-between;
@@ -185,7 +191,6 @@ input {
   padding: 1.5rem;
   box-sizing: border-box;
   text-align: left;
-  margin-bottom: 2rem;
   border-radius: 8px;
 }
 
