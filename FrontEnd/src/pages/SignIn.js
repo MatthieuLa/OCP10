@@ -1,8 +1,11 @@
-// src/pages/SignIn.js
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchUserFromAPI, fetchUserProfile } from "../features/user/userSlice";
+import {
+  fetchUserFromAPI,
+  setUser,
+  setToken,
+} from "../features/user/userSlice";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -18,19 +21,13 @@ const SignIn = () => {
     const resultAction = await dispatch(fetchUserFromAPI(credentials));
 
     if (fetchUserFromAPI.fulfilled.match(resultAction)) {
-      const { token } = resultAction.payload;
+      // Set user data in the store and optionally save token
+      dispatch(setUser({ user: resultAction.payload, rememberMe }));
+      dispatch(setToken({ token: resultAction.payload.token }));
 
       if (rememberMe) {
-        localStorage.setItem("token", token);
-      } else {
-        localStorage.removeItem("token"); // Clear token if not remembered
+        localStorage.setItem("token", resultAction.payload.token);
       }
-
-      // Set token in session storage for the API calls
-      sessionStorage.setItem("token", token);
-
-      // Fetch user profile after successful login
-      await dispatch(fetchUserProfile());
 
       navigate("/user");
     }

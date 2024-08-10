@@ -1,4 +1,3 @@
-// src/features/user/userSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Fetch user action
@@ -19,7 +18,6 @@ export const fetchUserFromAPI = createAsyncThunk(
       }
 
       const data = await response.json();
-      console.log("API response:", data);
       return data.body;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -27,12 +25,10 @@ export const fetchUserFromAPI = createAsyncThunk(
   }
 );
 
-// Fetch user profile action
 export const fetchUserProfile = createAsyncThunk(
   "user/fetchUserProfile",
   async (_, { getState, rejectWithValue }) => {
     const token = getState().user.token;
-    console.log("Token being sent:", token);
 
     if (!token) {
       return rejectWithValue("Token is missing");
@@ -68,10 +64,8 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: JSON.parse(localStorage.getItem("user")) || null,
-    token:
-      localStorage.getItem("token") || sessionStorage.getItem("token") || null,
-    isAuthenticated:
-      !!localStorage.getItem("token") && !!sessionStorage.getItem("token"),
+    token: sessionStorage.getItem("token") || null,
+    isAuthenticated: !!sessionStorage.getItem("token"),
     isLoading: false,
     error: null,
   },
@@ -80,16 +74,24 @@ const userSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      localStorage.removeItem("user");
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");
-      localStorage.removeItem("user");
     },
     setUser: (state, action) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
       state.isAuthenticated = true;
+
+      // Save user to localStorage
       localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", action.payload.token);
+
+      if (action.payload.rememberMe) {
+        localStorage.setItem("token", action.payload.token);
+      }
+    },
+    setToken: (state, action) => {
+      state.token = action.payload.token;
+      sessionStorage.setItem("token", action.payload.token);
     },
   },
   extraReducers: (builder) => {
@@ -102,6 +104,7 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.token = action.payload.token;
         state.isAuthenticated = true;
+
         sessionStorage.setItem("token", action.payload.token);
       })
       .addCase(fetchUserFromAPI.rejected, (state, action) => {
@@ -124,6 +127,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout, setUser } = userSlice.actions;
+export const { logout, setUser, setToken } = userSlice.actions;
 
 export default userSlice.reducer;
