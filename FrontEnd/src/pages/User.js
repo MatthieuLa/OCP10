@@ -1,6 +1,12 @@
+// src/pages/User.js
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserProfile, setUser } from "../features/user/userSlice";
+import {
+  fetchUserProfile,
+  setUser,
+  updateUserProfile,
+} from "../features/user/userSlice";
 import AccountList from "../containers/AccountList";
 
 const User = () => {
@@ -25,10 +31,14 @@ const User = () => {
     setIsEditing(true);
   };
 
-  const handleSaveClick = () => {
-    // Dispatch action to update the user name
-    dispatch(setUser({ ...user, userName: newUserName }));
-    setIsEditing(false);
+  const handleSaveClick = async () => {
+    try {
+      // Dispatch action to update the user name
+      await dispatch(updateUserProfile({ userName: newUserName }));
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to update user profile:", error);
+    }
   };
 
   const handleCancelClick = () => {
@@ -107,7 +117,7 @@ const User = () => {
         <h1>
           Welcome back
           <br />
-          {user?.firstName || ""} {user?.lastName || ""}!
+          {user?.userName || user?.firstName || ""} {user?.lastName || ""}!
         </h1>
         <button className="edit-button" onClick={handleEditClick}>
           Edit Name

@@ -37,7 +37,7 @@ const Header = () => {
           <div className="main-nav-user">
             <i className={iconProfile("user-circle auth")}></i>
             <Link to="/user" className="main-nav-link">
-              {user?.firstName || "User"}
+              {user?.userName || user?.firstName || "User"}
             </Link>
             <div onClick={handleLogout} className="main-nav-link">
               Sign Out

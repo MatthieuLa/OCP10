@@ -1,6 +1,7 @@
+// src/features/user/userSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Fetch user action
+// Existing fetch actions
 export const fetchUserFromAPI = createAsyncThunk(
   "user/fetchUserFromAPI",
   async (credentials, { rejectWithValue }) => {
@@ -54,6 +55,43 @@ export const fetchUserProfile = createAsyncThunk(
 
       const data = await response.json();
       return data.body;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// New updateUserProfile action
+export const updateUserProfile = createAsyncThunk(
+  "user/updateUserProfile",
+  async ({ userName }, { getState, rejectWithValue }) => {
+    const token = getState().user.token;
+
+    if (!token) {
+      return rejectWithValue("Token is missing");
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/v1/user/profile",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userName }),
+        }
+      );
+
+      if (!response.ok) {
+        return rejectWithValue(
+          `Failed to update user profile: ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      return data.body; // Return the updated user data
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -121,6 +159,20 @@ const userSlice = createSlice({
         localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      // Handle updateUserProfile
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload; // Update the user in the state
+        localStorage.setItem("user", JSON.stringify(action.payload));
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
