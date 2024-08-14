@@ -1,21 +1,14 @@
-// src/pages/User.js
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserProfile,
-  setUser,
   updateUserProfile,
 } from "../features/user/userSlice";
 import AccountList from "../containers/AccountList";
 
 const User = () => {
   const dispatch = useDispatch();
-
-  // Get user data from the store
   const user = useSelector((state) => state.user.user);
-
-  // Local state to control form visibility and username edit
   const [isEditing, setIsEditing] = useState(false);
   const [newUserName, setNewUserName] = useState(user?.userName || "");
 
@@ -23,7 +16,7 @@ const User = () => {
     if (!user) {
       dispatch(fetchUserProfile());
     } else {
-      setNewUserName(user.userName || ""); // Ensure newUserName is not null
+      setNewUserName(user.userName || "");
     }
   }, [dispatch, user]);
 
@@ -33,7 +26,6 @@ const User = () => {
 
   const handleSaveClick = async () => {
     try {
-      // Dispatch action to update the user name
       await dispatch(updateUserProfile({ userName: newUserName }));
       setIsEditing(false);
     } catch (error) {
@@ -42,7 +34,7 @@ const User = () => {
   };
 
   const handleCancelClick = () => {
-    setNewUserName(user?.userName || ""); // Reset to original user name or empty string
+    setNewUserName(user?.userName || "");
     setIsEditing(false);
   };
 
@@ -59,7 +51,7 @@ const User = () => {
               <input
                 type="text"
                 id="userName"
-                value={newUserName || ""} // Ensure value is not null
+                value={newUserName || ""}
                 onChange={(e) => setNewUserName(e.target.value)}
               />
             </div>
@@ -70,7 +62,7 @@ const User = () => {
               <input
                 type="text"
                 id="firstName"
-                value={user?.firstName || ""} // Ensure value is not null
+                value={user?.firstName || ""}
                 readOnly
                 disabled
                 className="input-disabled"
@@ -83,7 +75,7 @@ const User = () => {
               <input
                 type="text"
                 id="lastName"
-                value={user?.lastName || ""} // Ensure value is not null
+                value={user?.lastName || ""}
                 readOnly
                 disabled
                 className="input-disabled"

@@ -21,12 +21,14 @@ const SignIn = () => {
     const resultAction = await dispatch(fetchUserFromAPI(credentials));
 
     if (fetchUserFromAPI.fulfilled.match(resultAction)) {
-      // Set user data in the store and optionally save token
-      dispatch(setUser({ user: resultAction.payload, rememberMe }));
-      dispatch(setToken({ token: resultAction.payload.token }));
+      const userData = resultAction.payload;
+      dispatch(setUser({ user: userData, token: userData.token, rememberMe }));
+      dispatch(setToken({ token: userData.token }));
 
       if (rememberMe) {
-        localStorage.setItem("token", resultAction.payload.token);
+        localStorage.setItem("token", userData.token);
+      } else {
+        sessionStorage.setItem("token", userData.token);
       }
 
       navigate("/user");

@@ -1,7 +1,5 @@
-// src/features/user/userSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Existing fetch actions
 export const fetchUserFromAPI = createAsyncThunk(
   "user/fetchUserFromAPI",
   async (credentials, { rejectWithValue }) => {
@@ -61,7 +59,6 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
-// New updateUserProfile action
 export const updateUserProfile = createAsyncThunk(
   "user/updateUserProfile",
   async ({ userName }, { getState, rejectWithValue }) => {
@@ -91,10 +88,28 @@ export const updateUserProfile = createAsyncThunk(
       }
 
       const data = await response.json();
-      return data.body; // Return the updated user data
+      return data.body;
     } catch (error) {
       return rejectWithValue(error.message);
     }
+  }
+);
+
+export const checkAuth = createAsyncThunk(
+  "user/checkAuth",
+  async (_, { dispatch, getState }) => {
+    const token = getState().user.token;
+    if (token) {
+      try {
+        const userProfile = await dispatch(fetchUserProfile()).unwrap();
+        return userProfile;
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+        dispatch(logout());
+        return null;
+      }
+    }
+    return null;
   }
 );
 
@@ -102,8 +117,11 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: JSON.parse(localStorage.getItem("user")) || null,
-    token: sessionStorage.getItem("token") || null,
-    isAuthenticated: !!sessionStorage.getItem("token"),
+    token:
+      localStorage.getItem("token") || sessionStorage.getItem("token") || null,
+    isAuthenticated: !!(
+      localStorage.getItem("token") || sessionStorage.getItem("token")
+    ),
     isLoading: false,
     error: null,
   },
@@ -118,18 +136,18 @@ const userSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload.user;
+      state.token = action.payload.token;
       state.isAuthenticated = true;
-
-      // Save user to localStorage
       localStorage.setItem("user", JSON.stringify(action.payload.user));
-
       if (action.payload.rememberMe) {
         localStorage.setItem("token", action.payload.token);
+      } else {
+        sessionStorage.setItem("token", action.payload.token);
       }
     },
     setToken: (state, action) => {
       state.token = action.payload.token;
-      sessionStorage.setItem("token", action.payload.token);
+      state.isAuthenticated = true;
     },
   },
   extraReducers: (builder) => {
@@ -142,8 +160,6 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.token = action.payload.token;
         state.isAuthenticated = true;
-
-        sessionStorage.setItem("token", action.payload.token);
       })
       .addCase(fetchUserFromAPI.rejected, (state, action) => {
         state.isLoading = false;
@@ -162,19 +178,33 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
-      // Handle updateUserProfile
       .addCase(updateUserProfile.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload; // Update the user in the state
+        state.user = action.payload;
         localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.user = action.payload;
+          state.isAuthenticated = true;
+          localStorage.setItem("user", JSON.stringify(action.payload));
+        }
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
       });
   },
 });

@@ -1,7 +1,7 @@
 // src/App.js
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./features/store";
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -9,14 +9,20 @@ import SignIn from "./pages/SignIn";
 import User from "./pages/User";
 import PrivateRoute from "./components/PrivateRoute";
 import Footer from "./components/Footer";
+import { checkAuth } from "./features/user/userSlice";
 import "./styles/header.css";
 import "./styles/footer.css";
 
-const isAuthenticated = localStorage.getItem("token");
+function AppContent() {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
-function App() {
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   return (
-    <Provider store={store}>
+    <>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -34,6 +40,14 @@ function App() {
         />
       </Routes>
       <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Provider store={store}>
+      <AppContent />
     </Provider>
   );
 }

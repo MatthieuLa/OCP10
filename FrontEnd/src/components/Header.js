@@ -1,15 +1,12 @@
-// src/components/Header.js
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../features/user/userSlice";
-import { fetchUserProfile } from "../features/user/userSlice";
+import { logout, fetchUserProfile } from "../features/user/userSlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const user = useSelector((state) => state.user.user);
-  console.log("User in Header:", user);
 
   useEffect(() => {
     if (isAuthenticated && !user) {
