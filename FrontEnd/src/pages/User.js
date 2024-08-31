@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUserProfile,
-  updateUserProfile,
-} from "../features/user/userSlice";
+import { updateUserProfile } from "../features/user/userSlice";
 import AccountList from "../containers/AccountList";
 
 const User = () => {
@@ -13,11 +10,13 @@ const User = () => {
   const [newUserName, setNewUserName] = useState(user?.userName || "");
 
   useEffect(() => {
+    /* On n'a pas besoin de fetch le profil car le header s'en occupe.
     if (!user) {
       dispatch(fetchUserProfile());
     } else {
-      setNewUserName(user.userName || "");
-    }
+     */
+    setNewUserName(user?.userName || "");
+    // }
   }, [dispatch, user]);
 
   const handleEditClick = () => {
@@ -103,7 +102,7 @@ const User = () => {
     );
   }
 
-  return (
+  return user ? (
     <main className="main bg-dark">
       <div className="header">
         <h1>
@@ -118,6 +117,8 @@ const User = () => {
       <h2 className="sr-only">Accounts</h2>
       <AccountList />
     </main>
+  ) : (
+    <h1>Chargement de l'utilisateur en cours...</h1>
   );
 };
 

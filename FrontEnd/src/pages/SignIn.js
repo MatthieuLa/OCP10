@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  fetchUserFromAPI,
-  setUser,
-  setToken,
-} from "../features/user/userSlice";
+import { fetchUserFromAPI } from "../features/user/userSlice";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -17,22 +13,10 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const credentials = { email, password };
-    const resultAction = await dispatch(fetchUserFromAPI(credentials));
+    const credentials = { email, password, rememberMe };
+    await dispatch(fetchUserFromAPI(credentials));
 
-    if (fetchUserFromAPI.fulfilled.match(resultAction)) {
-      const userData = resultAction.payload;
-      dispatch(setUser({ user: userData, token: userData.token, rememberMe }));
-      dispatch(setToken({ token: userData.token }));
-
-      if (rememberMe) {
-        localStorage.setItem("token", userData.token);
-      } else {
-        sessionStorage.setItem("token", userData.token);
-      }
-
-      navigate("/user");
-    }
+    navigate("/user");
   };
 
   return (
