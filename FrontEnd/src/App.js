@@ -9,7 +9,6 @@ import SignIn from "./pages/SignIn";
 import User from "./pages/User";
 import PrivateRoute from "./components/PrivateRoute";
 import Footer from "./components/Footer";
-
 import "./styles/header.css";
 import "./styles/footer.css";
 
